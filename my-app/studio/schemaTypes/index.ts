@@ -1,4 +1,4 @@
-import { headerSchema } from "./Header"
+import { headerSchema } from "./header"
 import { heroSchema } from "./hero"
 import { footerSchema } from "./footer"
 
