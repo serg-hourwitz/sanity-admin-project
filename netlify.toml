@@ -1,4 +1,13 @@
 [build]
   base = "my-app"
   publish = ".next"
-  command = "npm run build"
+  command = "npm install && npm run build"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Опційно: fallback для SPA (динамічні маршрути)
+[[redirects]]
+  from = "/*"
+  to = "/"
+  status = 200
