@@ -3,6 +3,8 @@ import { Hero } from '@/components/Hero';
 import {Footer} from '@/components/Footer'
 import { sanityClient } from '@/utils/sanityClient';
 
+export const revalidate = 0; // потрібне для отримання актуальних даних з Sanity
+
 export default async function Home() {
   const headerData = await sanityClient.fetch(`*[_type == "header"][0]{
     title
