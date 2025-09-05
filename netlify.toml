@@ -1,0 +1,4 @@
+[build]
+  base = "my-app"
+  publish = "my-app/.next"
+  command = "npm run build"
