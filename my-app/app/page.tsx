@@ -8,6 +8,11 @@ import { sanityClient } from '@/utils/sanityClient';
 export const revalidate = 0; // потрібне для отримання актуальних даних з Sanity
 
 export default async function Home() {
+
+  const pageData = await sanityClient.fetch(`*[_type == "page"][0]{
+    title
+  }`);
+
   const headerData = await sanityClient.fetch(`*[_type == "header"][0]{
     title
   }`);
@@ -63,7 +68,7 @@ export default async function Home() {
 
   return (
     <div>
-      <h1 className="text-2xl text-red-900">Welcome!</h1>
+      <h1 className="text-2xl text-red-900">{pageData.title}</h1>
       <Header title={headerData.title} />
       <Hero
         title={heroData.title}
