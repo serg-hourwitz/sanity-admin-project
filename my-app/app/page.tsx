@@ -25,6 +25,15 @@ export default async function Home() {
   }`,
     { slug: 'homepage-table' } // ← тут твій slug
   );
+  
+  const tableData1 = await sanityClient.fetch(
+    `*[_type == "table" && slug.current == $slug][0]{
+    title,
+    columns,
+    rows[]{cells}
+  }`,
+    { slug: 'home' } // ← тут твій slug
+  );
 
   const tables = await sanityClient.fetch(`*[_type == "table"]{
   _id,
@@ -56,6 +65,11 @@ export default async function Home() {
         title={tableData?.title || 'Таблиця не знайдена'}
         columns={tableData?.columns || []}
         rows={tableData?.rows?.map((r: any) => r.cells) || []}
+      />
+      <Table
+        title={tableData1?.title || 'Таблиця не знайдена'}
+        columns={tableData1?.columns || []}
+        rows={tableData1?.rows?.map((r: any) => r.cells) || []}
       />
 
       <Footer title={footerData.title} />
