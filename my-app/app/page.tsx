@@ -2,6 +2,7 @@ import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { Footer } from '@/components/Footer';
 import Table from '@/components/Table';
+import Accordion from '@/components/Accordion';
 import { sanityClient } from '@/utils/sanityClient';
 
 export const revalidate = 0; // потрібне для отримання актуальних даних з Sanity
@@ -25,7 +26,7 @@ export default async function Home() {
   }`,
     { slug: 'homepage-table' } // ← тут твій slug
   );
-  
+
   const tableData1 = await sanityClient.fetch(
     `*[_type == "table" && slug.current == $slug][0]{
     title,
@@ -35,18 +36,26 @@ export default async function Home() {
     { slug: 'home' } // ← тут твій slug
   );
 
-  const tables = await sanityClient.fetch(`*[_type == "table"]{
-  _id,
-  title,
-  columns,
-  rows[]{cells}
-}`);
-
-  console.log('Sanity tables:', tables);
-
-  if (!tableData) {
-    return <div>Таблиця не знайдена</div>;
-  }
+  const accordionData = await sanityClient.fetch(
+    `*[_type == "accordion" && slug.current == $slug][0]{
+      title,
+      items[]{
+        title,
+        content
+      }
+    }`,
+    { slug: 'homepage-accordion' } // ← тут твій slug
+  );
+  const accordionData1 = await sanityClient.fetch(
+    `*[_type == "accordion" && slug.current == $slug][0]{
+      title,
+      items[]{
+        title,
+        content
+      }
+    }`,
+    { slug: 'home' } // ← тут твій slug
+  );
 
   const footerData = await sanityClient.fetch(`*[_type == "footer"][0]{
     title
@@ -71,7 +80,14 @@ export default async function Home() {
         columns={tableData1?.columns || []}
         rows={tableData1?.rows?.map((r: any) => r.cells) || []}
       />
-
+      <div className="p-6">
+        <h1 className="text-3xl font-bold mb-6">{accordionData.title}</h1>
+        <Accordion items={accordionData.items} />
+      </div>
+      <div className="p-6">
+        <h1 className="text-3xl font-bold mb-6">{accordionData1.title}</h1>
+        <Accordion items={accordionData1.items} />
+      </div>
       <Footer title={footerData.title} />
     </div>
   );
