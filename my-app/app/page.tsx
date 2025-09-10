@@ -3,6 +3,7 @@ import { Hero } from '@/components/Hero';
 import { Footer } from '@/components/Footer';
 import Table from '@/components/Table';
 import Accordion from '@/components/Accordion';
+import List from '@/components/List';
 import { sanityClient } from '@/utils/sanityClient';
 
 export const revalidate = 0; // потрібне для отримання актуальних даних з Sanity
@@ -62,6 +63,23 @@ export default async function Home() {
     { slug: 'home' } // ← тут твій slug
   );
 
+  const listData = await sanityClient.fetch(
+    `*[_type == "list" && slug.current == $slug][0]{
+      title,
+      items
+    }`,
+    { slug: 'homepage-list' } // ← тут твій slug
+
+  );
+
+  const listData1 = await sanityClient.fetch(
+    `*[_type == "list" && slug.current == $slug][0]{
+      title,
+      items
+    }`,
+    { slug: 'home' } // ← тут твій slug
+  );
+
   const footerData = await sanityClient.fetch(`*[_type == "footer"][0]{
     title
   }`);
@@ -93,6 +111,9 @@ export default async function Home() {
         <h1 className="text-3xl font-bold mb-6">{accordionData1.title}</h1>
         <Accordion items={accordionData1.items} />
       </div>
+
+      <List title={listData?.title || 'Список не знайдено'} items={listData?.items || []} />
+      <List title={listData1?.title || 'Список не знайдено'} items={listData1?.items || []} />
       <Footer title={footerData.title} />
     </div>
   );
