@@ -4,6 +4,7 @@ import { Footer } from '@/components/Footer';
 import Table from '@/components/Table';
 import Accordion from '@/components/Accordion';
 import List from '@/components/List';
+import Contacts from '@/components/Contacts';
 import { sanityClient } from '@/utils/sanityClient';
 
 export const revalidate = 0; // потрібне для отримання актуальних даних з Sanity
@@ -84,6 +85,13 @@ export default async function Home() {
     title
   }`);
 
+  const contactsData = await sanityClient.fetch(`*[_type == "contacts"][0]{
+    title,
+    address,
+    phone,
+    email
+  }`);
+
   return (
     <div>
       <h1 className="text-2xl text-red-900">{pageData.title}</h1>
@@ -115,6 +123,12 @@ export default async function Home() {
       <List title={listData?.title || 'Список не знайдено'} items={listData?.items || []} />
       <List title={listData1?.title || 'Список не знайдено'} items={listData1?.items || []} />
       <Footer title={footerData.title} />
+      <Contacts
+        title={contactsData.title}
+        address={contactsData.address}
+        phone={contactsData.phone}
+        email={contactsData.email}
+      />
     </div>
   );
 }

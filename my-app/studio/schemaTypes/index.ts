@@ -4,7 +4,9 @@ import {footerSchema} from './footer'
 import {tableSchema} from './table'
 import {accordionSchema} from './accordion'
 import {pageSchema} from './page'
-import {listSchema} from './list'
+import { listSchema } from './list'
+import { contactsSchema } from './contacts'
+
 export const schemaTypes = [
   pageSchema,
   headerSchema,
@@ -13,4 +15,5 @@ export const schemaTypes = [
   tableSchema,
   accordionSchema,
   listSchema,
+  contactsSchema,
 ]
